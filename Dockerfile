@@ -15,4 +15,4 @@ RUN pip install python-consul
 
 COPY *.py /usr/src/app/
 
-ENTRYPOINT ["python", "/usr/src/app/main.py"]
+ENTRYPOINT ["python", "/usr/src/app/sidecar.py"]
