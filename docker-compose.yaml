@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  cpx:
+    image: cpx:11.1-48.10
+    ports:
+      - 22
+      - 8088
+      - 80
+    tty: true
+    container_name: cpx
+    privileged: true
+
+  cpx-sidecar:
+    image: cpx-consul-sidecar
+    container_name: cpx-sidecar
+    depends_on:
+      - cpx
+    environment:
+      - NS_PORT=80
+      - NS_IP=cpx
+      - CONSUL_IP=${HOST_IP}

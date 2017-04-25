@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  login:
+    image: login-service
+    ports:
+      - 8080
+
+  cart:
+    image: cart-service
+    ports:
+      - 8080
+
+  catalog:
+    image: catalog-service
+    ports:
+      - 8080
