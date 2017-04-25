@@ -5,7 +5,7 @@ services:
     image: cpx:11.1-48.10
     ports:
       - 22
-      - 8088
+      - "127.0.0.1:8080:8088"
       - 80
     tty: true
     container_name: cpx

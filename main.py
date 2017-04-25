@@ -17,18 +17,18 @@ CS_VSERVER_PORT = 8088
 SERVICES = ['login-service', 'cart-service', 'catalog-service']
 
 
-def get_service_urls():
+def get_service_routes():
     c = consul.Consul(host=os.getenv('CONSUL_IP', '127.0.0.1'))
 
     index, data = c.kv.get('widgetshop/services', recurse=True)
-    service_urls = {}
+    service_routes = {}
     if data is None:
-        return service_urls
+        return service_routes
     for j in data:
-        if j['Key'].endswith('url'):
+        if j['Key'].endswith('route'):
             svcname = j['Key'].split('/')[2]
-            service_urls[svcname] = j['Value']
-    return service_urls
+            service_routes[svcname] = j['Value']
+    return service_routes
 
 
 def get_service_backends(svcname):
@@ -67,14 +67,14 @@ if __name__ == '__main__':
     nsip = os.getenv('NS_IP', '127.0.0.1')
     netskaler = NetscalerInterface(nsip, 'nsroot',
                                    'nsroot', str(nsport))
-    services_urls = get_service_urls()
-    logger.info('Service urls are ' + str(services_urls))
+    services_routes = get_service_routes()
+    logger.info('Service routes are ' + str(services_routes))
 
     netskaler.wait_for_ready()
 
     # create cs vserver, lb vservers and service groups
     netskaler.configure_cs_frontend(CS_VSERVER_NAME, '127.0.0.1',
-                                    CS_VSERVER_PORT, services_urls)
+                                    CS_VSERVER_PORT, services_routes)
 
     # populate service group members into service groups
     for svc in SERVICES:

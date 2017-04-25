@@ -1,8 +1,18 @@
 # Demo of Citrix NetScaler CPX configuration driven from Consul
-Designed to run on your laptop, shows how [NetScaler CPX](https://www.citrix.com/products/netscaler-adc/cpx-express.html) can be used as an application proxy for your backend (Dockerized) microservices. Service discovery is driven by [Registrator](https://github.com/gliderlabs/registrator) and [Consul](https://consul.io).  
+Developers need control at layer 7 for the ingress traffic for their application. Either their load balancer (AWS ELB) doesn't have all the features (routing / filtering / auth / redirection) or their ops team controls a very capable load balancer (NetScaler MPX) that cannot be configured by developers. One solution is to operate a second layer of load balancing ("Software LB or SLB) under developer control. This can be for example using [Netflix Zuul](https://github.com/Netflix/zuul). This demo shows how the NetScaler CPX (containerized NetScaler) can be used to form the SLB layer.
+
+<img src="docs/slbstack.png" width="720"/>
+
+Designed to run on your laptop, this demo shows [NetScaler CPX](https://www.citrix.com/products/netscaler-adc/cpx-express.html) can be used as the SLB for your backend (Dockerized) microservices. 
+
+
+Service discovery is driven by [Registrator](https://github.com/gliderlabs/registrator) and [Consul](https://consul.io). Routes discovered from Consul are configured using a sidecar container. The sidecar uses the NetScaler's REST API to configure the CPX. 
 
 This was demo'ed at DockerCon 2017 (April 19)
 <img src="docs/dockercondemo.png" width="720"/>
+
+## Asciicast
+[![asciicast](https://asciinema.org/a/2jwj1p3u9kcuuhu6jza81gzt4.png)](https://asciinema.org/a/2jwj1p3u9kcuuhu6jza81gzt4)
 
 
 ## Pre-requisites
@@ -64,9 +74,9 @@ Note that registrator "discovers" the consul container and populates the consul 
 * Register routes in Consul for each of the microservices (`login`, `cart` and `catalog`)
 
 ```
-docker run --net=host consul kv put widgetshop/services/login-service/url "/api/login/*"
-docker run --net=host consul kv put widgetshop/services/cart-service/url "/api/cart/*"
-docker run --net=host consul kv put widgetshop/services/catalog-service/url "/api/catalog/*"
+docker run --net=host consul kv put widgetshop/services/login-service/route "/api/login/*"
+docker run --net=host consul kv put widgetshop/services/cart-service/route "/api/cart/*"
+docker run --net=host consul kv put widgetshop/services/catalog-service/route "/api/catalog/*"
 ```
 
 * Run the microservices using Docker Compose:
