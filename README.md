@@ -1,5 +1,5 @@
 # Demo of Citrix NetScaler CPX configuration driven from Consul
-Designed to run on your laptop, shows how NetScaler CPX can be used as an application proxy for your backend (Dockerized) microservices. Service discovery is driven by [Registrator] (https://github.com/gliderlabs/registrator) and [Consul](https://consul.io).  
+Designed to run on your laptop, shows how [NetScaler CPX](https://www.citrix.com/products/netscaler-adc/cpx-express.html) can be used as an application proxy for your backend (Dockerized) microservices. Service discovery is driven by [Registrator](https://github.com/gliderlabs/registrator) and [Consul](https://consul.io).  
 
 This was demo'ed at DockerCon 2017 (April 19)
 <img src="docs/dockercondemo.png" width="720"/>
