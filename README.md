@@ -3,10 +3,10 @@ Developers need control at layer 7 for the ingress traffic for their application
 
 <img src="docs/slbstack.png" width="720"/>
 
-Designed to run on your laptop, this demo shows [NetScaler CPX](https://www.citrix.com/products/netscaler-adc/cpx-express.html) can be used as the SLB for your backend (Dockerized) microservices. 
+Designed to run on your laptop, this demo shows [NetScaler CPX](https://www.citrix.com/products/netscaler-adc/cpx-express.html) can be used as the SLB for your backend (Dockerized) microservices.
+If you are running on a Windows laptop you will need to set an environment variable for HOST_IP to be either local host or the IP address of your DockerNAT. The current Docker-compose file is pointed to 12.0-56.20. This should pull down automatically, but if that release is updated and no longer available you will need to update that to the latest release. 
 
-
-Service discovery is driven by [Registrator](https://github.com/gliderlabs/registrator) and [Consul](https://consul.io). Routes discovered from Consul are configured using a sidecar container. The sidecar uses the NetScaler's REST API to configure the CPX. 
+Service discovery is driven by [Registrator](https://github.com/gliderlabs/registrator) and [Consul](https://consul.io). Routes discovered from Consul are configured using a sidecar container. The sidecar uses the NetScaler's REST API to configure the CPX.
 
 This was demo'ed at DockerCon 2017 (April 19)
 <img src="docs/dockercondemo.png" width="720"/>
@@ -66,7 +66,7 @@ docker run --name consul -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h $HOST_IP
 * Run registrator
 
 ```
-docker run   --net=host --name registrator   -d -h $HOST_IP  -v /var/run/docker.sock:/tmp/docker.sock  gliderlabs/registrator -cleanup -resync 5 consul://localhost:8500 
+docker run   --net=host --name registrator   -d -h $HOST_IP  -v /var/run/docker.sock:/tmp/docker.sock  gliderlabs/registrator -cleanup -resync 5 consul://localhost:8500
 ```
 
 Note that registrator "discovers" the consul container and populates the consul registry with the "consul service". You can view the Consul ui using a browser at http://localhost:8500/

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   cpx:
-    image: cpx:11.1-48.10
+    image: store/citrix/netscalercpx:12.0-56.20
     ports:
       - 22
       - "127.0.0.1:8080:8088"
@@ -10,6 +10,8 @@ services:
     tty: true
     container_name: cpx
     privileged: true
+    environment:
+      - EULA=yes
 
   cpx-sidecar:
     image: cpx-consul-sidecar
